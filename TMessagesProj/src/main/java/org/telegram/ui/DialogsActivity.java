@@ -5992,7 +5992,11 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             } catch (Exception e) {}
             dialogsHintCell.clear();
         }
+        // AyuTelegrapher: only the contact-birthday banner and the account-frozen notice may show
+        final boolean contactBirthdayHint = folderId == 0 && communityId == 0 && !getMessagesController().premiumPurchaseBlocked() && BirthdayController.getInstance(currentAccount).contains() && !getMessagesController().dismissedSuggestions.contains("BIRTHDAY_CONTACTS_TODAY");
         if (isInPreviewMode()) {
+            dialogsHintCellVisible = false;
+        } else if (!getMessagesController().isFrozen() && !contactBirthdayHint) {
             dialogsHintCellVisible = false;
         } else if (getMessagesController().isFrozen()) {
             dialogsHintCellVisible = true;
