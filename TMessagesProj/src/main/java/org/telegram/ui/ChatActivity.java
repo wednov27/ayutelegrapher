@@ -37129,6 +37129,9 @@ public class ChatActivity extends BaseFragment implements
                         return ChatActivity.this.getSideMenuWidth();
                     }
                 };
+            } else if (viewType == com.ayutelegrapher.MediaFilter.HIDDEN_VIEW_TYPE) {
+                view = new View(mContext);
+                view.setMinimumHeight(1);
             }
             view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
             return new RecyclerListView.Holder(view);
@@ -37741,7 +37744,11 @@ public class ChatActivity extends BaseFragment implements
                 } else {
                     messages = ChatActivity.this.messages;
                 }
-                return messages.get(position - messagesStartRow).contentType;
+                final MessageObject msg = messages.get(position - messagesStartRow);
+                if (com.ayutelegrapher.MediaFilter.shouldHide(msg, currentChat)) {
+                    return com.ayutelegrapher.MediaFilter.HIDDEN_VIEW_TYPE;
+                }
+                return msg.contentType;
             } else if (position == botInfoRow) {
                 return 3;
             } else if (position == userInfoRow) {
