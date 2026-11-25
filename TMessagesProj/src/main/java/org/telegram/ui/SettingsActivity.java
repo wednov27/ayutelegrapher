@@ -153,7 +153,7 @@ import me.vkryl.android.animator.FactorAnimator;
 
 public class SettingsActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, ImageUpdater.ImageUpdaterDelegate, MainTabsActivity.TabFragmentDelegate, FactorAnimator.Target {
 
-    private static final int GHOST_MODE_ID = 0x6A057; // AyuTelegrapher: ghost mode switch row
+    private static final int AYU_SETTINGS_ID = 0x6A057; // AyuTelegrapher: settings page row
 
     private static final int ANIMATOR_ID_SEARCH_PAGE_VISIBLE = 0;
 
@@ -701,8 +701,8 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
         items.add(SettingCell.Factory.of(10, IconBackgroundColors.PURPLE.top, IconBackgroundColors.PURPLE.bottom, R.drawable.settings_language, getString(R.string.SettingsLanguage), LocaleController.getCurrentLanguageName()));
 
         items.add(UItem.asShadow(null));
-        items.add(UItem.asCheck(GHOST_MODE_ID, "Ghost mode").setChecked(com.ayutelegrapher.GhostMode.isEnabled()));
-        items.add(UItem.asShadow("No typing, online, read receipts or story views are sent."));
+        items.add(SettingCell.Factory.of(AYU_SETTINGS_ID, IconBackgroundColors.GRAY.top, IconBackgroundColors.GRAY.bottom, R.drawable.settings_chat, "AyuTelegrapher", "Ghost mode and filters"));
+        items.add(UItem.asShadow(null));
 
         if (!com.ayutelegrapher.Debloat.HIDE_PREMIUM) { // AyuTelegrapher: Premium, Stars, TON, Wallet, Business, Gift rows
         if (!getMessagesController().premiumFeaturesBlocked()) {
@@ -814,10 +814,8 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
             }
             return;
         }
-        if (item.id == GHOST_MODE_ID && view instanceof org.telegram.ui.Cells.TextCheckCell) {
-            final boolean on = !com.ayutelegrapher.GhostMode.isEnabled();
-            com.ayutelegrapher.GhostMode.setEnabled(on);
-            ((org.telegram.ui.Cells.TextCheckCell) view).setChecked(on);
+        if (item.id == AYU_SETTINGS_ID) {
+            presentFragment(new com.ayutelegrapher.AyuSettingsActivity());
             return;
         }
         switch (item.id) {

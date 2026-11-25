@@ -8,13 +8,9 @@ package com.ayutelegrapher;
 import org.telegram.messenger.MessageObject;
 import org.telegram.tgnet.TLRPC;
 
-// Hides chosen message types in groups and channels. Fixed at build time.
+// Hides chosen message types in groups and channels. Switches in AyuPrefs.
 public final class MediaFilter {
 
-    public static final boolean HIDE_VOICE = true;
-    public static final boolean HIDE_ROUND_VIDEO = true;
-    public static final boolean HIDE_DICE = true; // 🎲 🎯 🏀 ⚽ 🎳 🎰
-    public static final boolean HIDE_STICKERS = false; // static, animated and video stickers; not big single emoji
 
     // RecyclerView item type for a hidden message: an empty 1px row.
     public static final int HIDDEN_VIEW_TYPE = -1000;
@@ -26,9 +22,9 @@ public final class MediaFilter {
         if (chat == null || msg == null || msg.messageOwner == null || msg.isOut()) {
             return false; // private chats, and own messages, stay untouched
         }
-        return (HIDE_VOICE && msg.isVoice())
-                || (HIDE_ROUND_VIDEO && msg.isRoundVideo())
-                || (HIDE_DICE && msg.isDice())
-                || (HIDE_STICKERS && (msg.isSticker() || msg.isAnimatedSticker() || msg.isVideoSticker()));
+        return (msg.isVoice() && AyuPrefs.get(AyuPrefs.HIDE_VOICE))
+                || (msg.isRoundVideo() && AyuPrefs.get(AyuPrefs.HIDE_ROUND_VIDEO))
+                || (msg.isDice() && AyuPrefs.get(AyuPrefs.HIDE_DICE))
+                || ((msg.isSticker() || msg.isAnimatedSticker() || msg.isVideoSticker()) && AyuPrefs.get(AyuPrefs.HIDE_STICKERS));
     }
 }
