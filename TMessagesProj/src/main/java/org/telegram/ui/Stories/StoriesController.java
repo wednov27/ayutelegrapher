@@ -188,6 +188,9 @@ public class StoriesController {
     }
 
     public void loadAllStories() {
+        if (com.ayutelegrapher.Debloat.HIDE_STORIES) {
+            return;
+        }
         if (!firstLoad) {
             loadStories();
             loadStoriesRead();
@@ -249,6 +252,9 @@ public class StoriesController {
     }
 
     public boolean hasStories(long dialogId) {
+        if (com.ayutelegrapher.Debloat.HIDE_STORIES) {
+            return false;
+        }
         if (dialogId == 0) {
             return false;
         }
@@ -282,6 +288,9 @@ public class StoriesController {
     }
 
     public boolean hasStories() {
+        if (com.ayutelegrapher.Debloat.HIDE_STORIES) {
+            return false;
+        }
         return (dialogListStories != null && dialogListStories.size() > 0) || hasSelfStories();
     }
 
@@ -1337,6 +1346,9 @@ public class StoriesController {
     }
 
     public boolean hasUnreadStories(long dialogId) {
+        if (com.ayutelegrapher.Debloat.HIDE_STORIES) {
+            return false;
+        }
         TL_stories.PeerStories userStories = allStoriesMap.get(dialogId);
         if (userStories == null) {
             userStories = getStoriesFromFullPeer(dialogId);
@@ -1749,6 +1761,9 @@ public class StoriesController {
     }
 
     public boolean hasHiddenStories() {
+        if (com.ayutelegrapher.Debloat.HIDE_STORIES) {
+            return false;
+        }
         return !hiddenListStories.isEmpty();
     }
 
