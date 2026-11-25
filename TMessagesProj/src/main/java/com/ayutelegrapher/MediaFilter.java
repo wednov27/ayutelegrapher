@@ -14,6 +14,7 @@ public final class MediaFilter {
     public static final boolean HIDE_VOICE = true;
     public static final boolean HIDE_ROUND_VIDEO = true;
     public static final boolean HIDE_DICE = true; // 🎲 🎯 🏀 ⚽ 🎳 🎰
+    public static final boolean HIDE_STICKERS = false; // static, animated and video stickers; not big single emoji
 
     // RecyclerView item type for a hidden message: an empty 1px row.
     public static final int HIDDEN_VIEW_TYPE = -1000;
@@ -27,6 +28,7 @@ public final class MediaFilter {
         }
         return (HIDE_VOICE && msg.isVoice())
                 || (HIDE_ROUND_VIDEO && msg.isRoundVideo())
-                || (HIDE_DICE && msg.isDice());
+                || (HIDE_DICE && msg.isDice())
+                || (HIDE_STICKERS && (msg.isSticker() || msg.isAnimatedSticker() || msg.isVideoSticker()));
     }
 }
