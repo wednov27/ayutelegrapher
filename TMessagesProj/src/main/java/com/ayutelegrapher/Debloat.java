@@ -9,6 +9,7 @@ package com.ayutelegrapher;
 public final class Debloat {
 
     public static final boolean HIDE_STORIES = true;
+    public static final boolean HIDE_PREMIUM = true;
 
     private Debloat() {
     }

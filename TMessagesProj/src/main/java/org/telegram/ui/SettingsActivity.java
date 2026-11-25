@@ -704,6 +704,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
         items.add(UItem.asCheck(GHOST_MODE_ID, "Ghost mode").setChecked(com.ayutelegrapher.GhostMode.isEnabled()));
         items.add(UItem.asShadow("No typing, online, read receipts or story views are sent."));
 
+        if (!com.ayutelegrapher.Debloat.HIDE_PREMIUM) { // AyuTelegrapher: Premium, Stars, TON, Wallet, Business, Gift rows
         if (!getMessagesController().premiumFeaturesBlocked()) {
             items.add(SettingCell.Factory.of(11, 0xFFB659FF, 0xFF617CFF, R.drawable.settings_premium, getString(R.string.TelegramPremium)));
         }
@@ -737,6 +738,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
         if (!getMessagesController().premiumPurchaseBlocked()) {
             items.add(SettingCell.Factory.of(16, 0xFFF38B31, 0xFFE26314, R.drawable.settings_gift, getString(R.string.SendAGift)));
         }
+        } // AyuTelegrapher
         if (items.get(items.size() - 1).viewType != UniversalAdapter.VIEW_TYPE_SHADOW)
             items.add(UItem.asShadow(null));
 
