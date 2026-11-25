@@ -385,6 +385,10 @@ public class ConnectionsManager extends BaseController {
         if (BuildVars.LOGS_ENABLED) {
             FileLog.d("send request " + object + " with token = " + requestToken);
         }
+        if (com.ayutelegrapher.GhostMode.swallow(object, onComplete)) {
+            return;
+        }
+        final RequestDelegate onCompleteGhost = com.ayutelegrapher.GhostMode.offlineAfterSend(object, onComplete, this);
         try {
             NativeByteBuffer buffer = new NativeByteBuffer(object.getObjectSize());
             object.serializeToStream(buffer);
@@ -447,8 +451,8 @@ public class ConnectionsManager extends BaseController {
                     final TLObject finalResponse = resp;
                     final TLRPC.TL_error finalError = error;
                     Utilities.stageQueue.postRunnable(() -> {
-                        if (onComplete != null) {
-                            onComplete.run(finalResponse, finalError);
+                        if (onCompleteGhost != null) {
+                            onCompleteGhost.run(finalResponse, finalError);
                         } else if (onCompleteTimestamp != null) {
                             onCompleteTimestamp.run(finalResponse, finalError, timestamp);
                         } else if (finalResponse instanceof TLRPC.Updates) {

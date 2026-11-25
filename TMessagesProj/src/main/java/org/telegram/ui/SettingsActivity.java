@@ -153,6 +153,8 @@ import me.vkryl.android.animator.FactorAnimator;
 
 public class SettingsActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, ImageUpdater.ImageUpdaterDelegate, MainTabsActivity.TabFragmentDelegate, FactorAnimator.Target {
 
+    private static final int GHOST_MODE_ID = 0x6A057; // AyuTelegrapher: ghost mode switch row
+
     private static final int ANIMATOR_ID_SEARCH_PAGE_VISIBLE = 0;
 
     private final BoolAnimator animatorSearchPageVisible = new BoolAnimator(ANIMATOR_ID_SEARCH_PAGE_VISIBLE,
@@ -699,6 +701,8 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
         items.add(SettingCell.Factory.of(10, IconBackgroundColors.PURPLE.top, IconBackgroundColors.PURPLE.bottom, R.drawable.settings_language, getString(R.string.SettingsLanguage), LocaleController.getCurrentLanguageName()));
 
         items.add(UItem.asShadow(null));
+        items.add(UItem.asCheck(GHOST_MODE_ID, "Ghost mode").setChecked(com.ayutelegrapher.GhostMode.isEnabled()));
+        items.add(UItem.asShadow("No typing, online, read receipts or story views are sent."));
 
         if (!getMessagesController().premiumFeaturesBlocked()) {
             items.add(SettingCell.Factory.of(11, 0xFFB659FF, 0xFF617CFF, R.drawable.settings_premium, getString(R.string.TelegramPremium)));
@@ -806,6 +810,12 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
             if (item.object != null) {
                 search.addRecent(item.object);
             }
+            return;
+        }
+        if (item.id == GHOST_MODE_ID && view instanceof org.telegram.ui.Cells.TextCheckCell) {
+            final boolean on = !com.ayutelegrapher.GhostMode.isEnabled();
+            com.ayutelegrapher.GhostMode.setEnabled(on);
+            ((org.telegram.ui.Cells.TextCheckCell) view).setChecked(on);
             return;
         }
         switch (item.id) {
