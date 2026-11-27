@@ -7569,7 +7569,7 @@ public class EmojiView extends FrameLayout implements
                         pack.expanded = true;
                         emojipacksProcessed.add(pack);
                     }
-                    if (premiumEmojis.size() > 0) {
+                    if (premiumEmojis.size() > 0 && !com.ayutelegrapher.Debloat.HIDE_PREMIUM) { // AyuTelegrapher: no locked packs
                         EmojiPack pack = new EmojiPack();
                         pack.index = index++;
                         pack.set = set.set;
@@ -7605,7 +7605,6 @@ public class EmojiView extends FrameLayout implements
                 if (pack.documents == null || pack.documents.isEmpty()) {
                     continue;
                 }
-                pack.index = index++;
                 boolean premium = false;
                 for (int j = 0; j < pack.documents.size(); ++j) {
                     if (!MessageObject.isFreeEmoji(pack.documents.get(j))) {
@@ -7613,6 +7612,10 @@ public class EmojiView extends FrameLayout implements
                         break;
                     }
                 }
+                if (premium && !isPremium && com.ayutelegrapher.Debloat.HIDE_PREMIUM) {
+                    continue; // AyuTelegrapher: no locked packs
+                }
+                pack.index = index++;
                 pack.free = !premium;
                 pack.expanded = expandedEmojiSets.contains(pack.set.id);
                 pack.featured = true;
